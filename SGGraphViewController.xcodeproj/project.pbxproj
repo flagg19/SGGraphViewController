@@ -1,0 +1,264 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		A14C8379156506D600286730 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A14C8378156506D600286730 /* UIKit.framework */; };
+		A14C837B156506D600286730 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A14C837A156506D600286730 /* Foundation.framework */; };
+		A14C837D156506D600286730 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A14C837C156506D600286730 /* CoreGraphics.framework */; };
+		A14C8383156506D600286730 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A14C8381156506D600286730 /* InfoPlist.strings */; };
+		A14C8385156506D600286730 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A14C8384156506D600286730 /* main.m */; };
+		A14C8389156506D600286730 /* SGAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A14C8388156506D600286730 /* SGAppDelegate.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		A14C8374156506D600286730 /* SGGraphViewController.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SGGraphViewController.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A14C8378156506D600286730 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		A14C837A156506D600286730 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		A14C837C156506D600286730 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		A14C8380156506D600286730 /* SGGraphViewController-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SGGraphViewController-Info.plist"; sourceTree = "<group>"; };
+		A14C8382156506D600286730 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		A14C8384156506D600286730 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		A14C8386156506D600286730 /* SGGraphViewController-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SGGraphViewController-Prefix.pch"; sourceTree = "<group>"; };
+		A14C8387156506D600286730 /* SGAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SGAppDelegate.h; sourceTree = "<group>"; };
+		A14C8388156506D600286730 /* SGAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SGAppDelegate.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		A14C8371156506D600286730 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A14C8379156506D600286730 /* UIKit.framework in Frameworks */,
+				A14C837B156506D600286730 /* Foundation.framework in Frameworks */,
+				A14C837D156506D600286730 /* CoreGraphics.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		A14C8369156506D500286730 = {
+			isa = PBXGroup;
+			children = (
+				A14C837E156506D600286730 /* SGGraphViewController */,
+				A14C8377156506D600286730 /* Frameworks */,
+				A14C8375156506D600286730 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		A14C8375156506D600286730 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A14C8374156506D600286730 /* SGGraphViewController.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A14C8377156506D600286730 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				A14C8378156506D600286730 /* UIKit.framework */,
+				A14C837A156506D600286730 /* Foundation.framework */,
+				A14C837C156506D600286730 /* CoreGraphics.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		A14C837E156506D600286730 /* SGGraphViewController */ = {
+			isa = PBXGroup;
+			children = (
+				A14C8387156506D600286730 /* SGAppDelegate.h */,
+				A14C8388156506D600286730 /* SGAppDelegate.m */,
+				A14C837F156506D600286730 /* Supporting Files */,
+			);
+			path = SGGraphViewController;
+			sourceTree = "<group>";
+		};
+		A14C837F156506D600286730 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				A14C8380156506D600286730 /* SGGraphViewController-Info.plist */,
+				A14C8381156506D600286730 /* InfoPlist.strings */,
+				A14C8384156506D600286730 /* main.m */,
+				A14C8386156506D600286730 /* SGGraphViewController-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		A14C8373156506D600286730 /* SGGraphViewController */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A14C838C156506D600286730 /* Build configuration list for PBXNativeTarget "SGGraphViewController" */;
+			buildPhases = (
+				A14C8370156506D600286730 /* Sources */,
+				A14C8371156506D600286730 /* Frameworks */,
+				A14C8372156506D600286730 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SGGraphViewController;
+			productName = SGGraphViewController;
+			productReference = A14C8374156506D600286730 /* SGGraphViewController.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A14C836B156506D500286730 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				CLASSPREFIX = SG;
+				LastUpgradeCheck = 0430;
+			};
+			buildConfigurationList = A14C836E156506D500286730 /* Build configuration list for PBXProject "SGGraphViewController" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = A14C8369156506D500286730;
+			productRefGroup = A14C8375156506D600286730 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				A14C8373156506D600286730 /* SGGraphViewController */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		A14C8372156506D600286730 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A14C8383156506D600286730 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A14C8370156506D600286730 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A14C8385156506D600286730 /* main.m in Sources */,
+				A14C8389156506D600286730 /* SGAppDelegate.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		A14C8381156506D600286730 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A14C8382156506D600286730 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		A14C838A156506D600286730 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		A14C838B156506D600286730 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		A14C838D156506D600286730 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "SGGraphViewController/SGGraphViewController-Prefix.pch";
+				INFOPLIST_FILE = "SGGraphViewController/SGGraphViewController-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		A14C838E156506D600286730 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "SGGraphViewController/SGGraphViewController-Prefix.pch";
+				INFOPLIST_FILE = "SGGraphViewController/SGGraphViewController-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		A14C836E156506D500286730 /* Build configuration list for PBXProject "SGGraphViewController" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A14C838A156506D600286730 /* Debug */,
+				A14C838B156506D600286730 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A14C838C156506D600286730 /* Build configuration list for PBXNativeTarget "SGGraphViewController" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A14C838D156506D600286730 /* Debug */,
+				A14C838E156506D600286730 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = A14C836B156506D500286730 /* Project object */;
+}
