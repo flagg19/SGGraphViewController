@@ -7,6 +7,7 @@
 //
 
 #import "SGAppDelegate.h"
+#import "SGGraphBaseViewController.h"
 
 @implementation SGAppDelegate
 
@@ -17,6 +18,10 @@
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor whiteColor];
+        
+    SGGraphBaseViewController *base = [[SGGraphBaseViewController alloc]init];
+    [self.window addSubview:base.view];
+    
     [self.window makeKeyAndVisible];
     return YES;
 }
