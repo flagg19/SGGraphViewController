@@ -13,7 +13,10 @@
 		A14C8383156506D600286730 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A14C8381156506D600286730 /* InfoPlist.strings */; };
 		A14C8385156506D600286730 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A14C8384156506D600286730 /* main.m */; };
 		A14C8389156506D600286730 /* SGAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A14C8388156506D600286730 /* SGAppDelegate.m */; };
+		A1889BB7156653450076C8D4 /* NSString+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = A1889BB6156653450076C8D4 /* NSString+Additions.m */; };
+		A1BF351C1566929600A07DFB /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A1BF351B1566929600A07DFB /* JSONKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		A1E8E66915650E5B004DC6EA /* SGGraphBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A1E8E66815650E5A004DC6EA /* SGGraphBaseViewController.m */; };
+		A1E8E6841565319C004DC6EA /* Sencha.bundle in Resources */ = {isa = PBXBuildFile; fileRef = A1E8E6831565319C004DC6EA /* Sencha.bundle */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,8 +30,13 @@
 		A14C8386156506D600286730 /* SGGraphViewController-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SGGraphViewController-Prefix.pch"; sourceTree = "<group>"; };
 		A14C8387156506D600286730 /* SGAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SGAppDelegate.h; sourceTree = "<group>"; };
 		A14C8388156506D600286730 /* SGAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SGAppDelegate.m; sourceTree = "<group>"; };
+		A1889BB5156653450076C8D4 /* NSString+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSString+Additions.h"; path = "Classes/NSString+Additions.h"; sourceTree = "<group>"; };
+		A1889BB6156653450076C8D4 /* NSString+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSString+Additions.m"; path = "Classes/NSString+Additions.m"; sourceTree = "<group>"; };
+		A1BF351A1566929600A07DFB /* JSONKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSONKit.h; path = lib/JSONKit/JSONKit.h; sourceTree = SOURCE_ROOT; };
+		A1BF351B1566929600A07DFB /* JSONKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSONKit.m; path = lib/JSONKit/JSONKit.m; sourceTree = SOURCE_ROOT; };
 		A1E8E66715650E5A004DC6EA /* SGGraphBaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SGGraphBaseViewController.h; path = Classes/SGGraphBaseViewController.h; sourceTree = "<group>"; };
 		A1E8E66815650E5A004DC6EA /* SGGraphBaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SGGraphBaseViewController.m; path = Classes/SGGraphBaseViewController.m; sourceTree = "<group>"; };
+		A1E8E6831565319C004DC6EA /* Sencha.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Sencha.bundle; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,6 +83,7 @@
 		A14C837E156506D600286730 /* SGGraphViewController */ = {
 			isa = PBXGroup;
 			children = (
+				A1BF35181566927F00A07DFB /* JSONKit */,
 				A1E8E64A15650A5A004DC6EA /* Example */,
 				A1E8E64815650A48004DC6EA /* Classes */,
 			);
@@ -92,11 +101,23 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		A1BF35181566927F00A07DFB /* JSONKit */ = {
+			isa = PBXGroup;
+			children = (
+				A1BF351A1566929600A07DFB /* JSONKit.h */,
+				A1BF351B1566929600A07DFB /* JSONKit.m */,
+			);
+			name = JSONKit;
+			sourceTree = "<group>";
+		};
 		A1E8E64815650A48004DC6EA /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				A1E8E6831565319C004DC6EA /* Sencha.bundle */,
 				A1E8E66715650E5A004DC6EA /* SGGraphBaseViewController.h */,
 				A1E8E66815650E5A004DC6EA /* SGGraphBaseViewController.m */,
+				A1889BB5156653450076C8D4 /* NSString+Additions.h */,
+				A1889BB6156653450076C8D4 /* NSString+Additions.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -163,6 +184,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A14C8383156506D600286730 /* InfoPlist.strings in Resources */,
+				A1E8E6841565319C004DC6EA /* Sencha.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -176,6 +198,8 @@
 				A14C8385156506D600286730 /* main.m in Sources */,
 				A14C8389156506D600286730 /* SGAppDelegate.m in Sources */,
 				A1E8E66915650E5B004DC6EA /* SGGraphBaseViewController.m in Sources */,
+				A1889BB7156653450076C8D4 /* NSString+Additions.m in Sources */,
+				A1BF351C1566929600A07DFB /* JSONKit.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

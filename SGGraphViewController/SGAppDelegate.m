@@ -20,7 +20,7 @@
     self.window.backgroundColor = [UIColor whiteColor];
         
     SGGraphBaseViewController *base = [[SGGraphBaseViewController alloc]init];
-    [self.window addSubview:base.view];
+    self.window.rootViewController = base;
     
     [self.window makeKeyAndVisible];
     return YES;
