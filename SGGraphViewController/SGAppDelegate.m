@@ -19,8 +19,29 @@
     // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor whiteColor];
         
-    SGGraphBaseViewController *base = [[SGGraphBaseViewController alloc]init];
+    
+    //>>>>>>>>>>>>>>>>>>>>
+    NSDictionary *data_1 = [[NSDictionary alloc] initWithObjectsAndKeys:@"metric one",@"name",
+                            [[NSNumber alloc]initWithInt:1],@"data1",
+                            [[NSNumber alloc]initWithInt:1],@"data2",
+                            nil];
+    NSDictionary *data_2 = [[NSDictionary alloc] initWithObjectsAndKeys:@"metric two",@"name",
+                            [[NSNumber alloc]initWithInt:4],@"data1",
+                            [[NSNumber alloc]initWithInt:1],@"data2",
+                            nil];
+    NSDictionary *data_3 = [[NSDictionary alloc] initWithObjectsAndKeys:@"metric three",@"name",
+                            [[NSNumber alloc]initWithInt:8],@"data1",
+                            [[NSNumber alloc]initWithInt:1],@"data2",
+                            nil];
+    
+    NSArray *data = [[NSArray alloc] initWithObjects:data_1,data_2,data_3, nil];
+    //<<<<<<<<<<<<<<<<<<<<<<
+
+    
+    
+    SGGraphBaseViewController *base = [[SGGraphBaseViewController alloc]initWithSize:CGSizeMake(320, 480) andData:data];
     self.window.rootViewController = base;
+    [base showChart];
     
     [self.window makeKeyAndVisible];
     return YES;

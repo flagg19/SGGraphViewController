@@ -105,8 +105,8 @@
     NSString *main = [NSString stringWithFormat:
                       @"new Ext.chart.Chart({\
                       renderTo: Ext.getBody(),\
-                      width: %d,\
-                      height: %d,\
+                      width: %f,\
+                      height: %f,\
                       store: store,",size.width,size.height];
     
     // getJSTextSeries will be implemented in subclass to provide specialized charts
@@ -126,7 +126,16 @@
 
 - (NSString *)getJSTextSeries
 {
-    return nil;
+    return @"series: [{\
+            type: 'pie',\
+            angleField: 'data2',\
+            showInLegend: true,\
+            label: {\
+            field: 'name',\
+            display: 'rotate',\
+            contrast: true,\
+            font: '18px Arial'\
+            }}]";
 }
 
 #pragma mark - UIWebViewDelegate
