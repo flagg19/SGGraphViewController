@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SGAxis.h"
 
 @interface SGGraphBaseViewController : UIViewController <UIWebViewDelegate> {
     
@@ -16,6 +17,18 @@
     NSString *htmlIndex;
     // File system position of javascript files
     NSString *baseURL;
+    
+    /* Chart related data */
+    CGSize _size;
+    NSArray *_data;
+    SGAxis *_firstAxes;
+    SGAxis *_secondAxes;
+    
+    NSString *_storeJSText;
+    NSString *_seriesJSText;
+    NSString *_chartJSText;
+    NSString *_axesJSText;
+    NSString *_fullJSTextPage;
 }
 
 /*
@@ -24,9 +37,8 @@
  * Data is an array of dictionaries (all with the same model):
  *      (string) key -> (string | numeric) value
  * How this data is used is specified in the implementation of 'getJSTextSeries'.
- */
-- (id)initWithSize:(CGSize)size andData:(NSArray *)data;
-
+ */ 
+- (void)setupChartWithSize:(CGSize)size data:(NSArray *)data firstAxis:(SGAxis *)firstAxis secondyAxis:(SGAxis *)secondAxis;
 // Load the html into the webview.
 - (void)showChart;
 
@@ -37,24 +49,3 @@
 
 @end
 
-
-
-
-
-
-//        //>>>>>>>>>>>>>>>>>>>>
-//        NSDictionary *data_1 = [[NSDictionary alloc] initWithObjectsAndKeys:@"metric one",@"name",
-//                                [[NSNumber alloc]initWithInt:1],@"data1",
-//                                [[NSNumber alloc]initWithInt:1],@"data2",
-//                                nil];
-//        NSDictionary *data_2 = [[NSDictionary alloc] initWithObjectsAndKeys:@"metric two",@"name",
-//                                [[NSNumber alloc]initWithInt:4],@"data1",
-//                                [[NSNumber alloc]initWithInt:1],@"data2",
-//                                nil];
-//        NSDictionary *data_3 = [[NSDictionary alloc] initWithObjectsAndKeys:@"metric three",@"name",
-//                                [[NSNumber alloc]initWithInt:8],@"data1",
-//                                [[NSNumber alloc]initWithInt:1],@"data2",
-//                                nil];
-//        
-//        NSArray *data = [[NSArray alloc] initWithObjects:data_1,data_2,data_3, nil];
-//        //<<<<<<<<<<<<<<<<<<<<<<

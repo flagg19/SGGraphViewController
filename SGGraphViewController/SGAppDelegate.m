@@ -37,9 +37,10 @@
     NSArray *data = [[NSArray alloc] initWithObjects:data_1,data_2,data_3, nil];
     //<<<<<<<<<<<<<<<<<<<<<<
 
+    SGAxis *first = [[SGAxis alloc]initNumericAxisWithPosition:axisPositionLeft dataFieldName:@"name" title:@"ciao" drawGrid:NO];
     
-    
-    SGGraphBaseViewController *base = [[SGGraphBaseViewController alloc]initWithSize:CGSizeMake(320, 480) andData:data];
+    SGGraphBaseViewController *base = [[SGGraphBaseViewController alloc]init];
+    [base setupChartWithSize:CGSizeMake(320, 480) data:data firstAxis:first secondyAxis:nil];
     self.window.rootViewController = base;
     [base showChart];
     

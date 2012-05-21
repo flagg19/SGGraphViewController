@@ -14,9 +14,10 @@
 
 - (void)initialize;
 
-- (NSString *)getJSTextStore:(NSArray *)data;
-- (NSString *)getJSTextChartWithSize:(CGSize)size;
-- (NSString *)getJSPageWithStore:(NSString *)store andChart:(NSString *)chart;
+- (void)getJSTextAxes;
+- (void)getJSTextStore;
+- (void)getJSTextChart;
+- (void)getJSPage;
 
 @end
 
@@ -33,8 +34,8 @@
     NSError *error = nil;
     baseURL = [NSString stringWithFormat:@"%@/Sencha.bundle/", [[NSBundle mainBundle] bundleURL]];
     htmlIndex = [NSString stringWithContentsOfFile:[NSString stringWithFormat:@"%@/Sencha.bundle/index.html", [[NSBundle mainBundle] bundlePath]]
-                                               encoding:NSUTF8StringEncoding
-                                                  error:&error];
+                                          encoding:NSUTF8StringEncoding
+                                             error:&error];
     if (error)
     {
         NSLog([error localizedDescription],nil);
@@ -45,21 +46,38 @@
     htmlIndex = [htmlIndex stringByReplacingOccurrencesOfString:@"{title}" withString:@"SGGraph"];
 }
 
-- (id)initWithSize:(CGSize)size andData:(NSArray *)data
+- (id)init
 {
     self = [super init];
     if (self) {
         
         // Initializing local vars and loading bundle files
         [self initialize];
-        
-        // Building javascript chart page
-        NSString *jsIndex = [self getJSPageWithStore:[self getJSTextStore:data] andChart:[self getJSTextChartWithSize:size]];
-        
-        // Injecting the javascript page into the html
-        htmlIndex = [htmlIndex stringByReplacingOccurrencesOfString:@"{graph_javascript}" withString:jsIndex];
     }
     return self;
+}
+
+- (void)setupChartWithSize:(CGSize)size data:(NSArray *)data firstAxis:(SGAxis *)firstAxis secondyAxis:(SGAxis *)secondAxis
+{
+    _size = size;
+    _data = data;
+    _firstAxes = firstAxis;
+    _secondAxes = secondAxis;
+    
+    /* 
+     * Building the JS page, piece by piece.
+     * WARNING do not change the order of this calls, each on use the previous
+     * resutls setted in the global vars of this class to work.
+     */
+    [self getJSTextStore];
+    [self getJSTextAxes];
+    // getJSTextSeries will be implemented in subclass to provide specialized charts
+    _seriesJSText = [self getJSTextSeries];
+    [self getJSTextChart];
+    [self getJSPage];
+    
+    // Injecting the javascript page into the html
+    htmlIndex = [htmlIndex stringByReplacingOccurrencesOfString:@"{graph_javascript}" withString:_fullJSTextPage];
 }
 
 - (void)showChart
@@ -70,10 +88,11 @@
 
 #pragma mark - Private
 
-- (NSString *)getJSTextStore:(NSArray *)data
+- (void)getJSTextStore
 {
-    if (!data || [data count] == 0) {
-        return nil;
+    if (!_data || [_data count] == 0) {
+        _storeJSText = nil;
+        return;
     }
     
     static NSString *top = @"var store=new Ext.data.JsonStore({";
@@ -86,20 +105,20 @@
     
     // Adding fields
     store = [store stringByAppendingString:fieldsStr];
-    store = [store stringByAppendingString:[[[data objectAtIndex:0] allKeys] JSONString]];
+    store = [store stringByAppendingString:[[[_data objectAtIndex:0] allKeys] JSONString]];
     store = [store addComma];
     
     // Adding data
     store = [store stringByAppendingString:dataStr];
-    store = [store stringByAppendingString:[data JSONString]];
+    store = [store stringByAppendingString:[_data JSONString]];
     
     // Closing js part...
     store = [store stringByAppendingString:bottom];
     
-    return store;
+    _storeJSText = store;
 }
 
-- (NSString *)getJSTextChartWithSize:(CGSize)size
+- (void)getJSTextChart
 {
     static NSString *bottom = @"});";
     NSString *main = [NSString stringWithFormat:
@@ -107,19 +126,36 @@
                       renderTo: Ext.getBody(),\
                       width: %f,\
                       height: %f,\
-                      store: store,",size.width,size.height];
+                      store: store,",_size.width,_size.height];
     
-    // getJSTextSeries will be implemented in subclass to provide specialized charts
-    return [NSString stringWithFormat:@"%@%@%@",main,[self getJSTextSeries],bottom];
+    _chartJSText = [NSString stringWithFormat:@"%@%@%@%@",
+                    main,
+                    (_axesJSText) ? [_axesJSText addComma] : [NSString string],
+                    _seriesJSText,
+                    bottom];
 }
 
-- (NSString *)getJSPageWithStore:(NSString *)store andChart:(NSString *)chart
+- (void)getJSPage
 {
     static NSString *top = @"Ext.setup({onReady:function(){";
     static NSString *bottom = @"}});";
     
     // Putting all things together...
-    return [NSString stringWithFormat:@"%@%@%@%@",top,store,chart,bottom];
+    _fullJSTextPage = [NSString stringWithFormat:@"%@%@%@%@",top,_storeJSText,_chartJSText,bottom];
+}
+
+- (void)getJSTextAxes
+{
+    if (!_firstAxes && !_secondAxes)
+        return;
+    
+    // Putting both axes together
+    NSString *results = @"axes:[";
+    (_firstAxes) ? results = [results stringByAppendingString:[_firstAxes getJSTextAxis]] : nil;
+    (_firstAxes && _secondAxes) ? results = [results addComma] : nil;
+    (_secondAxes) ? results = [results stringByAppendingString:[_secondAxes getJSTextAxis]] : nil;
+    
+    _axesJSText = [results stringByAppendingString:@"]"];
 }
 
 #pragma mark - Subclass overriden methods

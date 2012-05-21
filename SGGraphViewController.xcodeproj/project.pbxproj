@@ -14,6 +14,9 @@
 		A14C8385156506D600286730 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A14C8384156506D600286730 /* main.m */; };
 		A14C8389156506D600286730 /* SGAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A14C8388156506D600286730 /* SGAppDelegate.m */; };
 		A1889BB7156653450076C8D4 /* NSString+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = A1889BB6156653450076C8D4 /* NSString+Additions.m */; };
+		A18D6A9A156A2153002E0FB2 /* SGPieViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A18D6A99156A2153002E0FB2 /* SGPieViewController.m */; };
+		A18D6A9E156A3564002E0FB2 /* SGAxis.m in Sources */ = {isa = PBXBuildFile; fileRef = A18D6A9D156A3564002E0FB2 /* SGAxis.m */; };
+		A18D6AA1156A72E9002E0FB2 /* SGLineViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A18D6AA0156A72E9002E0FB2 /* SGLineViewController.m */; };
 		A1BF351C1566929600A07DFB /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A1BF351B1566929600A07DFB /* JSONKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		A1E8E66915650E5B004DC6EA /* SGGraphBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A1E8E66815650E5A004DC6EA /* SGGraphBaseViewController.m */; };
 		A1E8E6841565319C004DC6EA /* Sencha.bundle in Resources */ = {isa = PBXBuildFile; fileRef = A1E8E6831565319C004DC6EA /* Sencha.bundle */; };
@@ -32,6 +35,12 @@
 		A14C8388156506D600286730 /* SGAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SGAppDelegate.m; sourceTree = "<group>"; };
 		A1889BB5156653450076C8D4 /* NSString+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSString+Additions.h"; path = "Classes/NSString+Additions.h"; sourceTree = "<group>"; };
 		A1889BB6156653450076C8D4 /* NSString+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSString+Additions.m"; path = "Classes/NSString+Additions.m"; sourceTree = "<group>"; };
+		A18D6A98156A2153002E0FB2 /* SGPieViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGPieViewController.h; sourceTree = "<group>"; };
+		A18D6A99156A2153002E0FB2 /* SGPieViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGPieViewController.m; sourceTree = "<group>"; };
+		A18D6A9C156A3564002E0FB2 /* SGAxis.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SGAxis.h; path = Classes/SGAxis.h; sourceTree = "<group>"; };
+		A18D6A9D156A3564002E0FB2 /* SGAxis.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SGAxis.m; path = Classes/SGAxis.m; sourceTree = "<group>"; };
+		A18D6A9F156A72E9002E0FB2 /* SGLineViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SGLineViewController.h; path = Classes/SGLineViewController.h; sourceTree = "<group>"; };
+		A18D6AA0156A72E9002E0FB2 /* SGLineViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SGLineViewController.m; path = Classes/SGLineViewController.m; sourceTree = "<group>"; };
 		A1BF351A1566929600A07DFB /* JSONKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSONKit.h; path = lib/JSONKit/JSONKit.h; sourceTree = SOURCE_ROOT; };
 		A1BF351B1566929600A07DFB /* JSONKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSONKit.m; path = lib/JSONKit/JSONKit.m; sourceTree = SOURCE_ROOT; };
 		A1E8E66715650E5A004DC6EA /* SGGraphBaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SGGraphBaseViewController.h; path = Classes/SGGraphBaseViewController.h; sourceTree = "<group>"; };
@@ -113,11 +122,17 @@
 		A1E8E64815650A48004DC6EA /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				A1889BB5156653450076C8D4 /* NSString+Additions.h */,
+				A1889BB6156653450076C8D4 /* NSString+Additions.m */,
 				A1E8E6831565319C004DC6EA /* Sencha.bundle */,
 				A1E8E66715650E5A004DC6EA /* SGGraphBaseViewController.h */,
 				A1E8E66815650E5A004DC6EA /* SGGraphBaseViewController.m */,
-				A1889BB5156653450076C8D4 /* NSString+Additions.h */,
-				A1889BB6156653450076C8D4 /* NSString+Additions.m */,
+				A18D6A98156A2153002E0FB2 /* SGPieViewController.h */,
+				A18D6A99156A2153002E0FB2 /* SGPieViewController.m */,
+				A18D6A9C156A3564002E0FB2 /* SGAxis.h */,
+				A18D6A9D156A3564002E0FB2 /* SGAxis.m */,
+				A18D6A9F156A72E9002E0FB2 /* SGLineViewController.h */,
+				A18D6AA0156A72E9002E0FB2 /* SGLineViewController.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -200,6 +215,9 @@
 				A1E8E66915650E5B004DC6EA /* SGGraphBaseViewController.m in Sources */,
 				A1889BB7156653450076C8D4 /* NSString+Additions.m in Sources */,
 				A1BF351C1566929600A07DFB /* JSONKit.m in Sources */,
+				A18D6A9A156A2153002E0FB2 /* SGPieViewController.m in Sources */,
+				A18D6A9E156A3564002E0FB2 /* SGAxis.m in Sources */,
+				A18D6AA1156A72E9002E0FB2 /* SGLineViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
