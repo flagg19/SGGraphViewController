@@ -19,6 +19,8 @@
 
 @interface SGPieViewController : SGGraphBaseViewController {
     
+    // Made of delightful dictionaries -> key (slice label) value (slice value)
+    NSMutableArray *_pie;
 }
 
 @property (nonatomic, retain) id <SGPieDataSource> dataSource;

@@ -1,18 +1,18 @@
 //
-//  ExempleViewController.m
+//  ExempleLineViewController.m
 //  SGGraphViewController
 //
 //  Created by Michele Amati on 5/22/12.
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
-#import "ExempleViewController.h"
+#import "ExempleLineViewController.h"
 
-@interface ExempleViewController ()
+@interface ExempleLineViewController ()
 
 @end
 
-@implementation ExempleViewController
+@implementation ExempleLineViewController
 
 
 - (void)viewWillAppear:(BOOL)animated

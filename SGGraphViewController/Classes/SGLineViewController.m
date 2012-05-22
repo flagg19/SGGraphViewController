@@ -46,44 +46,6 @@
     return self;
 }
 
-- (void)reloadData
-{
-    // No need to bother if no data source has been setted
-    if (!self.dataSource)
-        return;
-    
-    // For every lines
-    int tempLines = (int)[self.dataSource numberOfLinesInChart];
-    for (int line=0; line<tempLines; line++) {
-        SGLine *newLine = [[SGLine alloc]init];
-        // For every point in that line
-        int tempPoints = (int)[self.dataSource numberOfPointsInLines];
-        for (int point=0; point<tempPoints; point++) {
-            SGPoint *newPoint = [[SGPoint alloc]init];
-            // Setting up the point
-            newPoint.x = [self.dataSource xForPoint:[[NSNumber alloc]initWithInt:point]
-                                             inLine:[[NSNumber alloc]initWithInt:line]];
-            newPoint.y = [self.dataSource yForPoint:[[NSNumber alloc]initWithInt:point]
-                                             inLine:[[NSNumber alloc]initWithInt:line]];
-            
-            // Check if optional protocol method has being implemented
-            if ([self.dataSource respondsToSelector:@selector(descForPoint:inLine:)]) {
-                newPoint.desc = [self.dataSource descForPoint:[[NSNumber alloc]initWithInt:point]
-                                                       inLine:[[NSNumber alloc]initWithInt:line]];
-            }
-            
-            // Adding the point to the line
-            [newLine.points addObject:newPoint];
-        }
-        // Adding the line to the lines array
-        [_lines addObject:newLine];
-    }
-
-    [self setupChartWithSize:self.view.frame.size
-                        data:[self convertLinesToDrawableData]];
-    [self showChart];
-}
-
 - (SGAxis *)setupAxisWithTitle:(NSString *)title position:(axisPosition)position
 {
     if (!title)
@@ -188,6 +150,44 @@
 
 #pragma mark - Superclass overriden methods
 
+- (void)reloadData
+{
+    // No need to bother if no data source has been setted
+    if (!self.dataSource)
+        return;
+    
+    // For every lines
+    int tempLines = (int)[self.dataSource numberOfLinesInChart];
+    for (int line=0; line<tempLines; line++) {
+        SGLine *newLine = [[SGLine alloc]init];
+        // For every point in that line
+        int tempPoints = (int)[self.dataSource numberOfPointsInLines];
+        for (int point=0; point<tempPoints; point++) {
+            SGPoint *newPoint = [[SGPoint alloc]init];
+            // Setting up the point
+            newPoint.x = [self.dataSource xForPoint:[[NSNumber alloc]initWithInt:point]
+                                             inLine:[[NSNumber alloc]initWithInt:line]];
+            newPoint.y = [self.dataSource yForPoint:[[NSNumber alloc]initWithInt:point]
+                                             inLine:[[NSNumber alloc]initWithInt:line]];
+            
+            // Check if optional protocol method has being implemented
+            if ([self.dataSource respondsToSelector:@selector(descForPoint:inLine:)]) {
+                newPoint.desc = [self.dataSource descForPoint:[[NSNumber alloc]initWithInt:point]
+                                                       inLine:[[NSNumber alloc]initWithInt:line]];
+            }
+            
+            // Adding the point to the line
+            [newLine.points addObject:newPoint];
+        }
+        // Adding the line to the lines array
+        [_lines addObject:newLine];
+    }
+    
+    [self setupChartWithSize:self.view.frame.size
+                        data:[self convertLinesToDrawableData]];
+    [self showChart];
+}
+
 - (NSString *)getJSTextSeries
 {
     NSString *results = @"series:[";
@@ -232,7 +232,7 @@
     (temp4) ? [axes addObject:temp4] : nil;
         
     if ([axes count] == 0) {
-        return @"";
+        return nil;
     }
  
     return [SGAxis getJSTextAxes:axes];
