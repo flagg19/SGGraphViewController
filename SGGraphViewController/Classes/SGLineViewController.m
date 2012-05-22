@@ -51,6 +51,8 @@
     if (!title)
         return nil;
     
+    // Creating axes
+    
     NSMutableArray *fields = [[NSMutableArray alloc]init];
     axisType type = axisTypeNumeric;
     

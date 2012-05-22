@@ -76,10 +76,11 @@
     [self getJSTextChart];
     [self getJSPage];
     
-    // Injecting the javascript page into the html    
 #ifdef READ_INDEX_JS
+    // Using the index.js file included in the bundle for fast changes/debugging purpose
     htmlIndex = [htmlIndex stringByReplacingOccurrencesOfString:@">{graph_javascript}" withString:@" src=\"index.js\">"];
 #else
+    // Injecting the javascript page into the html    
     htmlIndex = [htmlIndex stringByReplacingOccurrencesOfString:@"{graph_javascript}" withString:_fullJSTextPage];
 #endif
     
@@ -125,6 +126,8 @@
 
 - (void)getJSTextChart
 {
+    // Stick together the axes and the series + some other chart info to form the complete chart code.
+    
     static NSString *bottom = @"});";
     NSString *main = [NSString stringWithFormat:@"new Ext.chart.Chart({renderTo: Ext.getBody(),width: %f,height: %f,store: store,",
                       _size.width,_size.height];
@@ -138,10 +141,11 @@
 
 - (void)getJSPage
 {
+    // Stick together the store and the chart + some other page setup code to form a complete JS sencha page.
+    
     static NSString *top = @"Ext.setup({onReady:function(){";
     static NSString *bottom = @"}});";
     
-    // Putting all things together...
     _fullJSTextPage = [NSString stringWithFormat:@"%@%@%@%@",top,_storeJSText,_chartJSText,bottom];
 }
 
@@ -163,16 +167,6 @@
 }
 
 #pragma mark - UIWebViewDelegate
-
-- (void)webViewDidStartLoad:(UIWebView *)webView
-{
-    
-}
-
-- (void)webViewDidFinishLoad:(UIWebView *)webView
-{
-    
-}
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error 
 {
