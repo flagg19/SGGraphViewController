@@ -40,7 +40,7 @@
     if ([line intValue] == 0)
         return point;
     else
-        return @"ciao";
+        return @"hello";
 }
 
 - (id)yForPoint:(NSNumber *)point inLine:(NSNumber *)line

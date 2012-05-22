@@ -19,12 +19,12 @@
     NSString *baseURL;
     
     @private
+    
     /* Chart related data */
     CGSize _size;
     NSArray *_data;
     SGAxis *_firstAxes;
     SGAxis *_secondAxes;
-    
     NSString *_storeJSText;
     NSString *_seriesJSText;
     NSString *_chartJSText;
@@ -44,7 +44,7 @@
 - (void)showChart;
 
 /*
- * Method that child class MUST implement.
+ * Functions that child class MUST implement.
  */
 - (NSString *)getJSTextSeries;
 - (NSString *)getJSTextAxes;
