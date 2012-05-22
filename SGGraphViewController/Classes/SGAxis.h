@@ -25,14 +25,17 @@ typedef enum {
     
     axisType _type;                 // Needed
     axisPosition _position;         // Needed (left assumed if not setted)
-    NSString *_dataFieldName;       // Needed
+    
+    // An array of strings
+    NSArray *_dataFieldNames;       // Needed
+    
     NSString *_title;               // Optional
     BOOL _grid;                     // Optional (NO assumed if not setted)
 }
 
 // They are almost identical now but further implementation will differ a lot
-- (id)initNumericAxisWithPosition:(axisPosition)position dataFieldName:(NSString *)fieldName title:(NSString *)title drawGrid:(BOOL)grid;
-- (id)initCategoryAxisWithPosition:(axisPosition)position dataFieldName:(NSString *)fieldName title:(NSString *)title drawGrid:(BOOL)grid;
+- (id)initNumericAxisWithPosition:(axisPosition)position dataFieldNames:(NSArray *)fieldNames title:(NSString *)title drawGrid:(BOOL)grid;
+- (id)initCategoryAxisWithPosition:(axisPosition)position dataFieldNames:(NSArray *)fieldNames title:(NSString *)title drawGrid:(BOOL)grid;
 
 // Using internal vars, return something like:
 /*
@@ -46,5 +49,6 @@ typedef enum {
  }
  */
 - (NSString *)getJSTextAxis;
++ (NSString *)getJSTextAxes:(NSArray *)axes;
 
 @end

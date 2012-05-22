@@ -10,11 +10,11 @@
 #import "NSString+Additions.h"
 #import "JSONKit.h"
 
+//#define READ_INDEX_JS 1
+
 @interface SGGraphBaseViewController ()
 
 - (void)initialize;
-
-- (void)getJSTextAxes;
 - (void)getJSTextStore;
 - (void)getJSTextChart;
 - (void)getJSPage;
@@ -57,12 +57,10 @@
     return self;
 }
 
-- (void)setupChartWithSize:(CGSize)size data:(NSArray *)data firstAxis:(SGAxis *)firstAxis secondyAxis:(SGAxis *)secondAxis
+- (void)setupChartWithSize:(CGSize)size data:(NSArray *)data
 {
     _size = size;
     _data = data;
-    _firstAxes = firstAxis;
-    _secondAxes = secondAxis;
     
     /* 
      * Building the JS page, piece by piece.
@@ -70,14 +68,21 @@
      * resutls setted in the global vars of this class to work.
      */
     [self getJSTextStore];
-    [self getJSTextAxes];
-    // getJSTextSeries will be implemented in subclass to provide specialized charts
+    
+    // getJSTextSeries e _getJSTextAxes will be implemented in subclass to provide specialized charts
+    _axesJSText = [self getJSTextAxes];
     _seriesJSText = [self getJSTextSeries];
+    
     [self getJSTextChart];
     [self getJSPage];
     
-    // Injecting the javascript page into the html
+    // Injecting the javascript page into the html    
+#ifdef READ_INDEX_JS
+    htmlIndex = [htmlIndex stringByReplacingOccurrencesOfString:@">{graph_javascript}" withString:@" src=\"index.js\">"];
+#else
     htmlIndex = [htmlIndex stringByReplacingOccurrencesOfString:@"{graph_javascript}" withString:_fullJSTextPage];
+#endif
+    
 }
 
 - (void)showChart
@@ -121,12 +126,8 @@
 - (void)getJSTextChart
 {
     static NSString *bottom = @"});";
-    NSString *main = [NSString stringWithFormat:
-                      @"new Ext.chart.Chart({\
-                      renderTo: Ext.getBody(),\
-                      width: %f,\
-                      height: %f,\
-                      store: store,",_size.width,_size.height];
+    NSString *main = [NSString stringWithFormat:@"new Ext.chart.Chart({renderTo: Ext.getBody(),width: %f,height: %f,store: store,",
+                      _size.width,_size.height];
     
     _chartJSText = [NSString stringWithFormat:@"%@%@%@%@",
                     main,
@@ -144,34 +145,21 @@
     _fullJSTextPage = [NSString stringWithFormat:@"%@%@%@%@",top,_storeJSText,_chartJSText,bottom];
 }
 
-- (void)getJSTextAxes
-{
-    if (!_firstAxes && !_secondAxes)
-        return;
-    
-    // Putting both axes together
-    NSString *results = @"axes:[";
-    (_firstAxes) ? results = [results stringByAppendingString:[_firstAxes getJSTextAxis]] : nil;
-    (_firstAxes && _secondAxes) ? results = [results addComma] : nil;
-    (_secondAxes) ? results = [results stringByAppendingString:[_secondAxes getJSTextAxis]] : nil;
-    
-    _axesJSText = [results stringByAppendingString:@"]"];
-}
-
 #pragma mark - Subclass overriden methods
 
 - (NSString *)getJSTextSeries
 {
-    return @"series: [{\
-            type: 'pie',\
-            angleField: 'data2',\
-            showInLegend: true,\
-            label: {\
-            field: 'name',\
-            display: 'rotate',\
-            contrast: true,\
-            font: '18px Arial'\
-            }}]";
+    return nil;
+}
+
+- (NSString *)getJSTextAxes
+{
+    return nil;
+}
+
+- (void)reloadData 
+{
+    return;
 }
 
 #pragma mark - UIWebViewDelegate

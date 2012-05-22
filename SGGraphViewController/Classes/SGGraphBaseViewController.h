@@ -18,6 +18,7 @@
     // File system position of javascript files
     NSString *baseURL;
     
+    @private
     /* Chart related data */
     CGSize _size;
     NSArray *_data;
@@ -38,7 +39,7 @@
  *      (string) key -> (string | numeric) value
  * How this data is used is specified in the implementation of 'getJSTextSeries'.
  */ 
-- (void)setupChartWithSize:(CGSize)size data:(NSArray *)data firstAxis:(SGAxis *)firstAxis secondyAxis:(SGAxis *)secondAxis;
+- (void)setupChartWithSize:(CGSize)size data:(NSArray *)data;
 // Load the html into the webview.
 - (void)showChart;
 
@@ -46,6 +47,8 @@
  * Method that child class MUST implement.
  */
 - (NSString *)getJSTextSeries;
+- (NSString *)getJSTextAxes;
+- (void)reloadData;
 
 @end
 

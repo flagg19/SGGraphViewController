@@ -7,7 +7,7 @@
 //
 
 #import "SGAppDelegate.h"
-#import "SGGraphBaseViewController.h"
+#import "ExempleViewController.h"
 
 @implementation SGAppDelegate
 
@@ -20,29 +20,30 @@
     self.window.backgroundColor = [UIColor whiteColor];
         
     
-    //>>>>>>>>>>>>>>>>>>>>
-    NSDictionary *data_1 = [[NSDictionary alloc] initWithObjectsAndKeys:@"metric one",@"name",
-                            [[NSNumber alloc]initWithInt:1],@"data1",
-                            [[NSNumber alloc]initWithInt:1],@"data2",
-                            nil];
-    NSDictionary *data_2 = [[NSDictionary alloc] initWithObjectsAndKeys:@"metric two",@"name",
-                            [[NSNumber alloc]initWithInt:4],@"data1",
-                            [[NSNumber alloc]initWithInt:1],@"data2",
-                            nil];
-    NSDictionary *data_3 = [[NSDictionary alloc] initWithObjectsAndKeys:@"metric three",@"name",
-                            [[NSNumber alloc]initWithInt:8],@"data1",
-                            [[NSNumber alloc]initWithInt:1],@"data2",
-                            nil];
+//    //>>>>>>>>>>>>>>>>>>>>
+//    NSDictionary *data_1 = [[NSDictionary alloc] initWithObjectsAndKeys:@"metric one",@"name",
+//                            [[NSNumber alloc]initWithInt:1],@"data1",
+//                            [[NSNumber alloc]initWithInt:1],@"data2",
+//                            nil];
+//    NSDictionary *data_2 = [[NSDictionary alloc] initWithObjectsAndKeys:@"metric two",@"name",
+//                            [[NSNumber alloc]initWithInt:4],@"data1",
+//                            [[NSNumber alloc]initWithInt:1],@"data2",
+//                            nil];
+//    NSDictionary *data_3 = [[NSDictionary alloc] initWithObjectsAndKeys:@"metric three",@"name",
+//                            [[NSNumber alloc]initWithInt:8],@"data1",
+//                            [[NSNumber alloc]initWithInt:1],@"data2",
+//                            nil];
+//    
+//    NSArray *data = [[NSArray alloc] initWithObjects:data_1,data_2,data_3, nil];
+//    //<<<<<<<<<<<<<<<<<<<<<<
+//
+//    SGAxis *first = [[SGAxis alloc]initNumericAxisWithPosition:axisPositionLeft dataFieldName:@"name" title:@"ciao" drawGrid:NO];
+//    
+//    SGGraphBaseViewController *base = [[SGGraphBaseViewController alloc]init];
+//    [base setupChartWithSize:CGSizeMake(320, 480) data:data firstAxis:first secondyAxis:nil];
     
-    NSArray *data = [[NSArray alloc] initWithObjects:data_1,data_2,data_3, nil];
-    //<<<<<<<<<<<<<<<<<<<<<<
-
-    SGAxis *first = [[SGAxis alloc]initNumericAxisWithPosition:axisPositionLeft dataFieldName:@"name" title:@"ciao" drawGrid:NO];
-    
-    SGGraphBaseViewController *base = [[SGGraphBaseViewController alloc]init];
-    [base setupChartWithSize:CGSizeMake(320, 480) data:data firstAxis:first secondyAxis:nil];
-    self.window.rootViewController = base;
-    [base showChart];
+    ExempleViewController *exe = [[ExempleViewController alloc]init];
+    self.window.rootViewController = exe;
     
     [self.window makeKeyAndVisible];
     return YES;

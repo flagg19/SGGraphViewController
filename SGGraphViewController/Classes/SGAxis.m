@@ -12,7 +12,7 @@
 
 @interface SGAxis ()
 
-- (id)initWithType:(axisType)type position:(axisPosition)position dataFieldName:(NSString *)fieldName title:(NSString *)title drawGrid:(BOOL)grid;
+- (id)initWithType:(axisType)type position:(axisPosition)position dataFieldNames:(NSArray *)fieldNames title:(NSString *)title drawGrid:(BOOL)grid;
 - (NSString *)getTextForType:(axisType)type;
 - (NSString *)getTextForPosition:(axisPosition)position;
 
@@ -20,30 +20,30 @@
 
 @implementation SGAxis
 
-- (id)initWithType:(axisType)type position:(axisPosition)position dataFieldName:(NSString *)fieldName title:(NSString *)title drawGrid:(BOOL)grid
+- (id)initWithType:(axisType)type position:(axisPosition)position dataFieldNames:(NSArray *)fieldNames title:(NSString *)title drawGrid:(BOOL)grid
 {
     if (self = [super init]) {
         _type = type;
         _position = position;
-        _dataFieldName = fieldName;
+        _dataFieldNames = fieldNames;
         _title = title;
         _grid = grid;
     }
     return self;
 }
 
-- (id)initNumericAxisWithPosition:(axisPosition)position dataFieldName:(NSString *)fieldName title:(NSString *)title drawGrid:(BOOL)grid
+- (id)initNumericAxisWithPosition:(axisPosition)position dataFieldNames:(NSArray *)fieldNames title:(NSString *)title drawGrid:(BOOL)grid
 {
-    self = [self initWithType:axisTypeNumeric position:position dataFieldName:fieldName title:title drawGrid:grid];
+    self = [self initWithType:axisTypeNumeric position:position dataFieldNames:fieldNames title:title drawGrid:grid];
     
     // Any other init setting related to numeric axis gose here
     
     return self;
 }
 
-- (id)initCategoryAxisWithPosition:(axisPosition)position dataFieldName:(NSString *)fieldName title:(NSString *)title drawGrid:(BOOL)grid
+- (id)initCategoryAxisWithPosition:(axisPosition)position dataFieldNames:(NSArray *)fieldNames title:(NSString *)title drawGrid:(BOOL)grid
 {
-    self = [self initWithType:axisTypeCategory position:position dataFieldName:fieldName title:title drawGrid:grid];
+    self = [self initWithType:axisTypeCategory position:position dataFieldNames:fieldNames title:title drawGrid:grid];
     
     // Any other init setting related to category axis gose here
     
@@ -54,14 +54,14 @@
 {
     switch (type) {
         case axisTypeNumeric:
-            return @"numeric";
+            return @"Numeric";
             break;
         case axisTypeCategory:
-            return @"category";
+            return @"Category";
             break;
         default:
             NSLog(@"Undefinex axis type, category will be used by default");
-            return @"category";
+            return @"Category";
             break;
     }
 }
@@ -95,13 +95,28 @@
     // Adding mandatory info
     result = [result stringByAppendingFormat:@"type:%@,",[[self getTextForType:_type] JSONString]];
     result = [result stringByAppendingFormat:@"position:%@,",[[self getTextForPosition:_position] JSONString]];
-    result = [result stringByAppendingFormat:@"fields:%@,",[[[NSArray alloc]initWithObjects:_dataFieldName, nil] JSONString]];
+    result = [result stringByAppendingFormat:@"fields:%@,",[_dataFieldNames JSONString]];
     
     // Adding optional info
     (_title) ? result = [result stringByAppendingFormat:@"title:%@,",[_title JSONString]] : nil;
-    result = [result stringByAppendingFormat:@"grid:%d",[[NSNumber alloc]initWithBool:_grid]];
+    result = [result stringByAppendingFormat:@"grid:%d",[[[NSNumber alloc]initWithBool:_grid] intValue]];
     
     return [result inCurlyBrackets];
+}
+
++ (NSString *)getJSTextAxes:(NSArray *)axes
+{
+    // Putting both axes together
+    NSString *results = @"axes:[";
+    
+    for (SGAxis *axis in axes) {
+        results = [results stringByAppendingString:[axis getJSTextAxis]];
+        if (![axis isEqual:[axes lastObject]]) {
+            results = [results addComma];
+        }
+    }
+    
+    return [results stringByAppendingString:@"]"];
 }
 
 
