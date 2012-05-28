@@ -185,7 +185,9 @@
         [_lines addObject:newLine];
     }
     
-    [self setupChartWithSize:self.view.frame.size
+    CGSize content = CGSizeMake(800, self.view.frame.size.height);
+
+    [self setupChartWithSize:content
                         data:[self convertLinesToDrawableData]];
     [self showChart];
 }

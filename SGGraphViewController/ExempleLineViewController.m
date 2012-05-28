@@ -22,6 +22,10 @@
     [self reloadData];
 }
 
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
+{
+    return YES;
+}
 
 #pragma mark - SGLineDataSource
 
@@ -37,10 +41,7 @@
 
 - (id)xForPoint:(NSNumber *)point inLine:(NSNumber *)line
 {
-    if ([line intValue] == 0)
-        return point;
-    else
-        return @"hello";
+    return point;
 }
 
 - (id)yForPoint:(NSNumber *)point inLine:(NSNumber *)line

@@ -20,8 +20,8 @@
     // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor whiteColor];
     
-    //ExempleLineViewController *exe = [[ExempleLineViewController alloc]init];
-    ExemplePieViewController *exe = [[ExemplePieViewController alloc]init];
+    ExempleLineViewController *exe = [[ExempleLineViewController alloc]init];
+    //ExemplePieViewController *exe = [[ExemplePieViewController alloc]init];
     self.window.rootViewController = exe;
     
     [self.window makeKeyAndVisible];

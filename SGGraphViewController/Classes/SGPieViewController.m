@@ -41,7 +41,9 @@
         [_pie addObject:newSlice];
     }
     
-    [self setupChartWithSize:self.view.frame.size data:_pie];
+    CGSize content = CGSizeMake(800, self.view.frame.size.height);
+    
+    [self setupChartWithSize:content data:_pie];
     [self showChart];
 }
 

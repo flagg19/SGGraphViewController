@@ -30,6 +30,7 @@
     NSString *_chartJSText;
     NSString *_axesJSText;
     NSString *_fullJSTextPage;
+    NSString *_containerJSText;
 }
 
 /*

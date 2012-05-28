@@ -10,11 +10,12 @@
 #import "NSString+Additions.h"
 #import "JSONKit.h"
 
-//#define READ_INDEX_JS 1
+#define READ_INDEX_JS 1
 
 @interface SGGraphBaseViewController ()
 
 - (void)initialize;
+- (void)getJSTextContainer;
 - (void)getJSTextStore;
 - (void)getJSTextChart;
 - (void)getJSPage;
@@ -74,15 +75,16 @@
     _seriesJSText = [self getJSTextSeries];
     
     [self getJSTextChart];
+    [self getJSTextContainer];
     [self getJSPage];
     
-#ifdef READ_INDEX_JS
+    #ifdef READ_INDEX_JS
     // Using the index.js file included in the bundle for fast changes/debugging purpose
     htmlIndex = [htmlIndex stringByReplacingOccurrencesOfString:@">{graph_javascript}" withString:@" src=\"index.js\">"];
-#else
+    #else
     // Injecting the javascript page into the html    
     htmlIndex = [htmlIndex stringByReplacingOccurrencesOfString:@"{graph_javascript}" withString:_fullJSTextPage];
-#endif
+    #endif
     
 }
 
@@ -129,7 +131,7 @@
     // Stick together the axes and the series + some other chart info to form the complete chart code.
     
     static NSString *bottom = @"});";
-    NSString *main = [NSString stringWithFormat:@"new Ext.chart.Chart({renderTo: Ext.getBody(),width: %f,height: %f,store: store,",
+    NSString *main = [NSString stringWithFormat:@"var my_chart=new Ext.chart.Chart({renderTo: Ext.getBody(),width: %f,height: %f,store: store,",
                       _size.width,_size.height];
     
     _chartJSText = [NSString stringWithFormat:@"%@%@%@%@",
@@ -139,6 +141,21 @@
                     bottom];
 }
 
+- (void)getJSTextContainer
+{
+    _containerJSText = @"var my_container = new Ext.Container({renderTo:Ext.getBody(),fullscreen:true,items:[my_chart],scroll:'horizontal',style:'overflow: hidden; margin:0px'});";
+    
+    /*
+     var my_container = new Ext.Container({
+     renderTo: Ext.getBody(),
+     fullscreen: true,
+     items: [my_chart],
+     scroll: 'both',
+     style: 'background-color: #AEAEAE; overflow: hidden; margin:0px'
+     });
+     */
+}
+
 - (void)getJSPage
 {
     // Stick together the store and the chart + some other page setup code to form a complete JS sencha page.
@@ -146,7 +163,7 @@
     static NSString *top = @"Ext.setup({onReady:function(){";
     static NSString *bottom = @"}});";
     
-    _fullJSTextPage = [NSString stringWithFormat:@"%@%@%@%@",top,_storeJSText,_chartJSText,bottom];
+    _fullJSTextPage = [NSString stringWithFormat:@"%@%@%@%@%@",top,_storeJSText,_chartJSText,_containerJSText,bottom];
 }
 
 #pragma mark - Subclass overriden methods
@@ -165,6 +182,7 @@
 {
     return;
 }
+
 
 #pragma mark - UIWebViewDelegate
 
