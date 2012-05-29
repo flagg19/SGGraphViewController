@@ -70,10 +70,12 @@
      */
     [self getJSTextStore];
     
-    // getJSTextSeries e _getJSTextAxes will be implemented in subclass to provide specialized charts
+    // Functions that will be implemented in subclass to provide specialized charts
     _axesJSText = [self getJSTextAxes];
     _seriesJSText = [self getJSTextSeries];
+    _interactionsJSTexs = [self getJSTextInteractions];
     
+    // Continue building the js page...
     [self getJSTextChart];
     [self getJSTextContainer];
     [self getJSPage];
@@ -131,28 +133,44 @@
     // Stick together the axes and the series + some other chart info to form the complete chart code.
     
     static NSString *bottom = @"});";
-    NSString *main = [NSString stringWithFormat:@"var my_chart=new Ext.chart.Chart({renderTo: Ext.getBody(),width: %f,height: %f,store: store,",
+    NSString *main = [NSString stringWithFormat:@"var my_chart=new Ext.chart.Chart({renderTo:Ext.getBody(),width:%f,height:%f,store:store,",
                       _size.width,_size.height];
     
-    _chartJSText = [NSString stringWithFormat:@"%@%@%@%@",
+    _chartJSText = [NSString stringWithFormat:@"%@%@%@%@%@",
                     main,
                     (_axesJSText) ? [_axesJSText addComma] : [NSString string],
+                    (_interactionsJSTexs) ? [_interactionsJSTexs addComma] : [NSString string],
                     _seriesJSText,
                     bottom];
 }
 
 - (void)getJSTextContainer
 {
-    _containerJSText = @"var my_container = new Ext.Container({renderTo:Ext.getBody(),fullscreen:true,items:[my_chart],scroll:'horizontal',style:'overflow: hidden; margin:0px'});";
+    _containerJSText = 
+    @"var my_container = new Ext.Panel({"
+    "renderTo:Ext.getBody(),"
+    "fullscreen: true,"
+    "items: [my_chart],"
+    "centered: true,"
+    "scroll: 'horizontal',"
+    "layout: {"
+    "type: 'hbox',"
+    "align: 'center',"
+    "pack: 'center'"
+    "}});";
     
     /*
-     var my_container = new Ext.Container({
-     renderTo: Ext.getBody(),
+     var my_container = new Ext.Panel({
+     renderTo:Ext.getBody(),
      fullscreen: true,
      items: [my_chart],
-     scroll: 'both',
-     style: 'background-color: #AEAEAE; overflow: hidden; margin:0px'
-     });
+     centered: true,
+     scroll: 'horizontal',
+     layout: {
+     type: 'hbox',
+     align: 'center',
+     pack: 'center'
+     }});
      */
 }
 
@@ -174,6 +192,11 @@
 }
 
 - (NSString *)getJSTextAxes
+{
+    return nil;
+}
+
+- (NSString *)getJSTextInteractions
 {
     return nil;
 }

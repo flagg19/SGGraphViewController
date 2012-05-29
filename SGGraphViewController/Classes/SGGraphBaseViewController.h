@@ -31,6 +31,7 @@
     NSString *_axesJSText;
     NSString *_fullJSTextPage;
     NSString *_containerJSText;
+    NSString *_interactionsJSTexs;
 }
 
 /*
@@ -49,6 +50,7 @@
  */
 - (NSString *)getJSTextSeries;
 - (NSString *)getJSTextAxes;
+- (NSString *)getJSTextInteractions;
 - (void)reloadData;
 
 @end

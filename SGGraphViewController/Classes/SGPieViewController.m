@@ -49,7 +49,13 @@
 
 - (NSString *)getJSTextSeries
 {        
-    return @"series: [{type:'pie',angleField:'value',label:{field:'key',display:'rotate',contrast:true,font:'18px Arial'}}]";
+    return @"series:[{"
+    "type:'pie',"
+    "angleField:'value',"
+    "label:{field:'key',"
+    "display:'rotate',"
+    "contrast:true,"
+    "font:'18px Arial'}}]";
     
     /*
      Human readable version... 

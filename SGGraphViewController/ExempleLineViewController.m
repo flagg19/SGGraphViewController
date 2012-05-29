@@ -31,25 +31,35 @@
 
 - (int)numberOfLinesInChart
 {
-    return 2;
+    return 1;
 }
 
 - (int)numberOfPointsInLines
 {
-    return 37;
+    return 30;
 }
 
 - (id)xForPoint:(NSNumber *)point inLine:(NSNumber *)line
 {
-    return point;
+    return [[NSDate date] description];
 }
 
 - (id)yForPoint:(NSNumber *)point inLine:(NSNumber *)line
 {
     if ([line intValue] == 0)
-        return point;
+    {
+        return [[NSNumber alloc]initWithInt:arc4random_uniform(30)];
+    }
     else
         return [[NSNumber alloc]initWithInt:[point intValue]+1];
+}
+
+- (NSString *)descForPoint:(NSNumber *)point inLine:(NSNumber *)line
+{
+    if ([line intValue] == 0)
+        return [NSString stringWithFormat:@"test1_%d",[point intValue]];
+    else
+        return [NSString stringWithFormat:@"test2_%d",[point intValue]];
 }
 
 - (NSString *)titleForAxisInPosition:(axisPosition)position

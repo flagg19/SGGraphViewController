@@ -30,6 +30,8 @@
 - (SGAxis *)setupAxisWithTitle:(NSString *)title position:(axisPosition)position;
 - (NSArray *)convertLinesToDrawableData;
 - (NSString *)getJSTextSerieForLine:(int)line;
+// Future improvement should move intteraction to a separate class
+- (NSString *)getJSTextInteractions;
 
 @end
 
@@ -150,6 +152,17 @@
      */
 }
 
+- (NSString *)getJSTextInteractions
+{
+    return
+    @"interactions:[{"
+    "type:'iteminfo',"
+    "listeners: {"
+    "show: function(interaction, item, panel) {"
+    "panel.update(['<ul><li><b>x: </b>' + item.storeItem.get('x_0') + '</li>', '<li><b>y: </b> ' + item.value[1]+ '</li></ul>'].join(''));"
+    "}}}]";
+}
+
 #pragma mark - Superclass overriden methods
 
 - (void)reloadData
@@ -185,7 +198,7 @@
         [_lines addObject:newLine];
     }
     
-    CGSize content = CGSizeMake(800, self.view.frame.size.height);
+    CGSize content = CGSizeMake(800, 300);
 
     [self setupChartWithSize:content
                         data:[self convertLinesToDrawableData]];
