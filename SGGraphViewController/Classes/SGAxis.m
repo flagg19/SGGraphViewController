@@ -98,7 +98,7 @@
     result = [result stringByAppendingFormat:@"fields:%@,",[_dataFieldNames JSONString]];
     
     // Adding optional info
-    (_title) ? result = [result stringByAppendingFormat:@"title:%@,",[_title JSONString]] : nil;
+    (_title && ![_title isEqualToString:@""]) ? result = [result stringByAppendingFormat:@"title:%@,",[_title JSONString]] : nil;
     result = [result stringByAppendingFormat:@"grid:%d",[[[NSNumber alloc]initWithBool:_grid] intValue]];
     
     return [result inCurlyBrackets];
@@ -106,7 +106,7 @@
 
 + (NSString *)getJSTextAxes:(NSArray *)axes
 {
-    // Putting both axes together
+    // Putting all axes together
     NSString *results = @"axes:[";
     
     for (SGAxis *axis in axes) {

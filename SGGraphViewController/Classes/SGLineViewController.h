@@ -10,42 +10,26 @@
 @class SGAxis;
 
 @protocol SGLineDataSource <NSObject>
-
 @required
-- (int)numberOfLinesInChart;
-- (int)numberOfPointsInLines;
-// If nil is setted the axis is inactive
-- (NSString *)titleForAxisInPosition:(axisPosition)position;
-- (id)xForPoint:(NSNumber *)point inLine:(NSNumber *)line;
+- (NSNumber *)numberOfLinesInChart;
+- (NSNumber *)numberOfPointsInLines;
+- (NSString *)xForPoint:(NSNumber *)point;
+- (NSString *)descForPoint:(NSNumber *)point;
 - (id)yForPoint:(NSNumber *)point inLine:(NSNumber *)line;
+// If nil the axis is inactive, if @"" the axis has no title
+- (NSString *)titleForAxisInPosition:(axisPosition)position;
 @optional
-// Value not in use atm.
-- (NSString *)descForPoint:(NSNumber *)point inLine:(NSNumber *)line;
-
-@end
-
-/*
- * Used to rapresent the points of the line chart (obj-c side)
- */
-@interface SGPoint : NSObject
-@property (nonatomic, retain) id x;
-@property (nonatomic, retain) id y;
-@property (nonatomic, retain) NSString *desc;
-@end
-
-/*
- * Used to rapresent the lines of the line chart (obj-c side)
- */
-@interface SGLine : NSObject
-// Made of SGPoint
-@property (nonatomic, retain) NSMutableArray *points;
+// Valid values are from 0 to 10
+- (NSNumber *)smoothValueForLine:(NSNumber *)line;
+- (BOOL)itemInfoInteraction;
 @end
 
 
 @interface SGLineViewController : SGGraphBaseViewController {
     
-    // Made of SGLine
-    NSMutableArray *_lines;
+    NSMutableArray *_x;
+    NSMutableArray *_desc;
+    NSMutableArray *_ys;
 }
 
 @property (nonatomic, retain) id <SGLineDataSource> dataSource;

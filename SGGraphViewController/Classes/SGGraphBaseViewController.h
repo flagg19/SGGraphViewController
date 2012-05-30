@@ -18,8 +18,7 @@
     // File system position of javascript files
     NSString *baseURL;
     
-    @private
-    
+    @private    
     /* Chart related data */
     CGSize _size;
     NSArray *_data;
@@ -34,14 +33,15 @@
     NSString *_interactionsJSTexs;
 }
 
+// Passed to sencha framework, it's not related to the controller frame 
+@property (nonatomic, assign) CGSize chartSize;
+
 /*
- * Size is passed to sencha framework, and is not related to the frame
- * of the controller.
  * Data is an array of dictionaries (all with the same model):
- *      (string) key -> (string | numeric) value
+ * (string) key -> (string | numeric) value
  * How this data is used is specified in the implementation of 'getJSTextSeries'.
  */ 
-- (void)setupChartWithSize:(CGSize)size data:(NSArray *)data;
+- (void)setupChartWithData:(NSArray *)data;
 // Load the html into the webview.
 - (void)showChart;
 

@@ -9,21 +9,6 @@
 #import "SGLineViewController.h"
 #import "NSString+Additions.h"
 
-@implementation SGPoint
-@synthesize x = _x;
-@synthesize y = _y;
-@synthesize desc = _desc;
-@end
-
-@implementation SGLine
-@synthesize points = _points;
-- (id)init
-{
-    if (self = [super init])
-        self.points = [[NSMutableArray alloc] init];
-    return self;
-}
-@end
 
 @interface SGLineViewController ()
 
@@ -43,10 +28,14 @@
 {
     if (self = [super init]) {
         // Custom init here...
-        _lines = [[NSMutableArray alloc] init];
+        _x = [[NSMutableArray alloc] init];
+        _desc = [[NSMutableArray alloc] init];
+        _ys = [[NSMutableArray alloc] init];
     }
     return self;
 }
+
+#pragma mark - Private functions
 
 - (SGAxis *)setupAxisWithTitle:(NSString *)title position:(axisPosition)position
 {
@@ -54,30 +43,31 @@
         return nil;
     
     // Creating axes
-    
     NSMutableArray *fields = [[NSMutableArray alloc]init];
-    axisType type = axisTypeNumeric;
+    axisType type = axisTypeUndefined;
     
     
-    for (int l=0; l<[_lines count]; l++) {
-        (position == axisPositionLeft || position == axisPositionRight)
-        ? [fields addObject:[NSString stringWithFormat:@"y_%d",l]]
-        : [fields addObject:[NSString stringWithFormat:@"x_%d",l]];
-        
-        /* 
-         * Try to find out what type of axis to use (numeric or category) looking at
-         * the data type of the id objects in the y coordinate of a point. 
-         * Falling back to axisTypeCategory if there's at least one NSString.
-         */
-        
-        id sample = (position == axisPositionLeft || position == axisPositionRight)
-        ? [(SGPoint *)[[[_lines objectAtIndex:l] points] objectAtIndex:0] y]
-        : [(SGPoint *)[[[_lines objectAtIndex:l] points] objectAtIndex:0] x];
-        
-        if ([sample isKindOfClass:[NSString class]]) {
-            type = axisTypeCategory;
+    if ((position == axisPositionTop || position == axisPositionBottom)) {
+        // Adding x field to the x axis
+        [fields addObject:@"x"];
+        type = axisTypeCategory;
+    }
+    else {
+        // Looping throught ys and adding them all to the y axis
+        for (int l=0; l<[_ys count]; l++) {
+            [fields addObject:[NSString stringWithFormat:@"y_%d",l]];
+            // If type is still numeric, looking if the actual line is numeric only
+            if (type == axisTypeNumeric) {
+                for (id sample in [_ys objectAtIndex:l]) {
+                    if ([sample isKindOfClass:[NSString class]]) {
+                        type = axisTypeCategory;
+                        break;
+                    }
+                }
+            }
         }
     }
+    
     return (type == axisTypeCategory)
     ? [[SGAxis alloc]initCategoryAxisWithPosition:position dataFieldNames:fields title:title drawGrid:YES]
     : [[SGAxis alloc]initNumericAxisWithPosition:position dataFieldNames:fields title:title drawGrid:YES];
@@ -89,46 +79,22 @@
     
     /*
      The final strcture will be something like this: an array of dic.
-     
-     {'x_0':value, 'y_0':10, 'desc_0':12, 'x_1':14, 'y_1':8, 'desc_1':13},
-     {'x_0':value, 'y_0':7, 'desc_0':8, 'x_1':16, 'y_1':10, 'desc_1':3},
+     {'x':value, 'y_0':10, 'desc':12, 'y_1':8},
+     {'x':value, 'y_0':7, 'desc':8, 'y_1':10},
      ...
-     
-     Every "row" is formed by the coordinate of every line: x,y,dec,x,y,des ecc.
-     So the number of rows is given by the number of point in the rows.
-     The number of column is 3 (x,y,des) multplyed by the number of lines.
      */
+
+    int rows = [_x count];
+    int column = [_ys count];
     
-    int row = [[[_lines objectAtIndex:0] points] count];
-    int column = [_lines count]*3;
-    
-    for (int r=0; r<row; r++) {
-        NSMutableDictionary *newRow = [[NSMutableDictionary alloc] init];
+    for (int r=0; r<rows; r++) {
+        NSMutableDictionary *row = [[NSMutableDictionary alloc]init];
+        [row setValue:[_x objectAtIndex:r] forKey:@"x"];
+        [row setValue:[_desc objectAtIndex:r] forKey:@"desc"];
         for (int c=0; c<column; c++) {
-            
-            NSString *key;
-            switch (c%3) {
-                case 0:
-                    key = [NSString stringWithFormat:@"x_%d", c/3];
-                    [newRow setValue:[(SGPoint *)[[[_lines objectAtIndex:c/3] points] objectAtIndex:r] x]
-                              forKey:key];
-                    break;
-                case 1:
-                    key = [NSString stringWithFormat:@"y_%d", c/3];
-                    [newRow setValue:[(SGPoint *)[[[_lines objectAtIndex:c/3] points] objectAtIndex:r] y]
-                              forKey:key];
-                    break;
-                case 2:
-                    key = [NSString stringWithFormat:@"desc_%d", c/3];
-                    [newRow setValue:[(SGPoint *)[[[_lines objectAtIndex:c/3] points] objectAtIndex:r] desc]
-                              forKey:key];
-                    break;
-                default:
-                    NSLog(@"Impossible case in convertLinesToDrawableData function.");
-                    break;
-            }
+            [row setValue:[[_ys objectAtIndex:c] objectAtIndex:r] forKey:[NSString stringWithFormat:@"y_%d",c]];
         }
-        [results addObject:newRow];
+        [results addObject:row];
     }
     
     return results;
@@ -136,72 +102,70 @@
 
 - (NSString *)getJSTextSerieForLine:(int)line
 {
-    NSString *results = [NSString stringWithFormat:@"{type:\"line\",axis:\"left\",xField:%@,yField:%@}",
-                         [NSString stringWithFormat:@"\"x_%d\"",line],
-                         [NSString stringWithFormat:@"\"y_%d\"",line]];
+    // Asking for optional smooth value
+    NSNumber *smooth = ([self.dataSource respondsToSelector:@selector(smoothValueForLine:)])
+    ? [self.dataSource smoothValueForLine:[[NSNumber alloc]initWithInt:line]]
+    : [[NSNumber alloc]initWithInt:0];
     
+    NSString *results = [NSString stringWithFormat:@"{type:\"line\",axis:\"left\",smooth:%d,xField:\"x\",yField:\"y_%d\"}",
+                         [smooth intValue],
+                         line];
     return results;
-    
-    /*
-     {
-     type: 'line',
-     axis: 'left',
-     xField: 'name',
-     yField: 'data1',
-     }
-     */
 }
 
 - (NSString *)getJSTextInteractions
 {
-    return
-    @"interactions:[{"
-    "type:'iteminfo',"
-    "listeners: {"
-    "show: function(interaction, item, panel) {"
-    "panel.update(['<ul><li><b>x: </b>' + item.storeItem.get('x_0') + '</li>', '<li><b>y: </b> ' + item.value[1]+ '</li></ul>'].join(''));"
-    "}}}]";
+    // Asking for optional itemInfo 
+    BOOL itemInfo = ([self.dataSource respondsToSelector:@selector(itemInfoInteraction)])
+    ? [self.dataSource itemInfoInteraction]
+    : NO;
+    
+    if (itemInfo) {
+        return
+        @"interactions:[{"
+        "type:'iteminfo',"
+        "listeners: {"
+        "show: function(interaction, item, panel) {"
+        "panel.update(['<ul><li>'+item.storeItem.get('desc')+'</li>','<li>'+item.value[1]+'</li></ul>'].join(''));"
+        "}}}]";
+    }
+    
+    return nil;
 }
 
 #pragma mark - Superclass overriden methods
 
 - (void)reloadData
 {
+    // Clearing the local arrays
+    [_x removeAllObjects];
+    [_desc removeAllObjects];
+    [_ys removeAllObjects];
+    
     // No need to bother if no data source has been setted
     if (!self.dataSource)
         return;
     
-    // For every lines
-    int tempLines = (int)[self.dataSource numberOfLinesInChart];
-    for (int line=0; line<tempLines; line++) {
-        SGLine *newLine = [[SGLine alloc]init];
-        // For every point in that line
-        int tempPoints = (int)[self.dataSource numberOfPointsInLines];
-        for (int point=0; point<tempPoints; point++) {
-            SGPoint *newPoint = [[SGPoint alloc]init];
-            // Setting up the point
-            newPoint.x = [self.dataSource xForPoint:[[NSNumber alloc]initWithInt:point]
-                                             inLine:[[NSNumber alloc]initWithInt:line]];
-            newPoint.y = [self.dataSource yForPoint:[[NSNumber alloc]initWithInt:point]
-                                             inLine:[[NSNumber alloc]initWithInt:line]];
-            
-            // Check if optional protocol method has being implemented
-            if ([self.dataSource respondsToSelector:@selector(descForPoint:inLine:)]) {
-                newPoint.desc = [self.dataSource descForPoint:[[NSNumber alloc]initWithInt:point]
-                                                       inLine:[[NSNumber alloc]initWithInt:line]];
-            }
-            
-            // Adding the point to the line
-            [newLine.points addObject:newPoint];
-        }
-        // Adding the line to the lines array
-        [_lines addObject:newLine];
+    int tempLines = [[self.dataSource numberOfLinesInChart] intValue];
+    int tempPoints = [[self.dataSource numberOfPointsInLines] intValue];
+    
+    // Asking for x & desc
+    for (int point=0; point<tempPoints; point++) {
+        [_x addObject:[self.dataSource xForPoint:[[NSNumber alloc]initWithInt:point]]];
+        [_desc addObject:[self.dataSource descForPoint:[[NSNumber alloc]initWithInt:point]]];
     }
     
-    CGSize content = CGSizeMake(800, 300);
+    // Asking for ys
+    for (int line=0; line<tempLines; line++) {
+        NSMutableArray* tempY = [[NSMutableArray alloc] init];
+        for (int point=0; point<tempPoints; point++) {
+            [tempY addObject:[self.dataSource yForPoint:[[NSNumber alloc]initWithInt:point]
+                                                 inLine:[[NSNumber alloc]initWithInt:line]]];
+        }
+        [_ys addObject:tempY];
+    }
 
-    [self setupChartWithSize:content
-                        data:[self convertLinesToDrawableData]];
+    [self setupChartWithData:[self convertLinesToDrawableData]];
     [self showChart];
 }
 
@@ -210,27 +174,13 @@
     NSString *results = @"series:[";
     
     // Generating every serie (one per line)
-    for (int l=0; l<[_lines count]; l++) {
+    for (int l=0; l<[_ys count]; l++) {
         results = [results stringByAppendingString:[self getJSTextSerieForLine:l]];
         // Avoid adding comma last line
-        (l+1 < [_lines count]) ? results = [results addComma] : nil;
+        (l+1 < [_ys count]) ? results = [results addComma] : nil;
     }
     
     return [results stringByAppendingString:@"]"];
-    
-    /*
-     series: [{
-     type: 'line',
-     axis: 'left',
-     xField: 'name',
-     yField: 'data1',
-     }, {
-     type: 'line',
-     axis: 'left',
-     xField: 'name',
-     yField: 'data4',
-     }]
-     */
 }
 
 - (NSString *)getJSTextAxes

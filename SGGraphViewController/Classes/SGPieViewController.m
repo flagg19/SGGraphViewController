@@ -40,10 +40,8 @@
                                   [self.dataSource valueForSlice:slice],@"value",nil];
         [_pie addObject:newSlice];
     }
-    
-    CGSize content = CGSizeMake(800, self.view.frame.size.height);
-    
-    [self setupChartWithSize:content data:_pie];
+        
+    [self setupChartWithData:_pie];
     [self showChart];
 }
 

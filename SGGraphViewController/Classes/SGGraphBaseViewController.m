@@ -10,7 +10,7 @@
 #import "NSString+Additions.h"
 #import "JSONKit.h"
 
-#define READ_INDEX_JS 1
+//#define READ_INDEX_JS 1
 
 @interface SGGraphBaseViewController ()
 
@@ -23,6 +23,7 @@
 @end
 
 @implementation SGGraphBaseViewController
+@synthesize chartSize = _chartSize;
 
 - (void)initialize
 {
@@ -58,9 +59,13 @@
     return self;
 }
 
-- (void)setupChartWithSize:(CGSize)size data:(NSArray *)data
+- (void)setupChartWithData:(NSArray *)data
 {
-    _size = size;
+    // Using setted size if avable, falling back to view's bounds otherwise
+    _size = (self.chartSize.height > 0 && self.chartSize.width > 0)
+    ? _chartSize
+    : self.view.bounds.size;
+    
     _data = data;
     
     /* 
