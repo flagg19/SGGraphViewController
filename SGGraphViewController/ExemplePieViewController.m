@@ -28,19 +28,19 @@
 
 #pragma mark - SGPieDataSource
 
-- (int)numberOfSlicesInPie
+- (NSNumber *)numberOfSlicesInPie
 {
-    return 3;
+    return [[NSNumber alloc]initWithInt:10];
 }
 
-- (NSString *)labelForSlice:(int)num
+- (NSString *)labelForSlice:(NSNumber *)num
 {
-    return [NSString stringWithFormat:@"slice_%d",num];
+    return [NSString stringWithFormat:@"slice_%d",[num intValue]+1];
 }
 
-- (NSNumber *)valueForSlice:(int)num
+- (NSNumber *)valueForSlice:(NSNumber *)num
 {
-    return [[NSNumber alloc]initWithInt:num];
+    return [[NSNumber alloc]initWithInt:[num intValue]];
 }
 
 @end

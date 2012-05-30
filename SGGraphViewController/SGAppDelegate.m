@@ -20,9 +20,10 @@
     // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor whiteColor];
     
-    ExempleLineViewController *exe = [[ExempleLineViewController alloc]init];
-    //ExemplePieViewController *exe = [[ExemplePieViewController alloc]init];
-    [exe setChartSize:CGSizeMake(3000, 300)];
+//    ExempleLineViewController *exe = [[ExempleLineViewController alloc]init];
+//    [exe setChartSize:CGSizeMake(3000, 300)];
+    ExemplePieViewController *exe = [[ExemplePieViewController alloc]init];
+    [exe setChartSize:CGSizeMake(300, 300)];    
     self.window.rootViewController = exe;
     
     [self.window makeKeyAndVisible];

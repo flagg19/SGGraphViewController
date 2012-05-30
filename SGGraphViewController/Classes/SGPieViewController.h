@@ -9,12 +9,10 @@
 #import "SGGraphBaseViewController.h"
 
 @protocol SGPieDataSource <NSObject>
-
 @required
-- (int)numberOfSlicesInPie;
-- (NSString *)labelForSlice:(int)num;
-- (NSNumber *)valueForSlice:(int)num;
-
+- (NSNumber *)numberOfSlicesInPie;
+- (NSNumber *)valueForSlice:(NSNumber *)num;
+- (NSString *)labelForSlice:(NSNumber *)num;
 @end
 
 @interface SGPieViewController : SGGraphBaseViewController {

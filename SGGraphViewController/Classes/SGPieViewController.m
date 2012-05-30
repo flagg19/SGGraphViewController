@@ -33,11 +33,11 @@
         return;
     
     // For every slice
-    int tempSlices = (int)[self.dataSource numberOfSlicesInPie];
+    int tempSlices = [[self.dataSource numberOfSlicesInPie]intValue];
     for (int slice=0; slice<tempSlices; slice++) {
         NSDictionary *newSlice = [[NSDictionary alloc]initWithObjectsAndKeys:
-                                  [self.dataSource labelForSlice:slice],@"key",
-                                  [self.dataSource valueForSlice:slice],@"value",nil];
+                                  [self.dataSource labelForSlice:[[NSNumber alloc]initWithInt:slice]],@"key",
+                                  [self.dataSource valueForSlice:[[NSNumber alloc]initWithInt:slice]],@"value",nil];
         [_pie addObject:newSlice];
     }
         
@@ -50,24 +50,22 @@
     return @"series:[{"
     "type:'pie',"
     "angleField:'value',"
-    "label:{field:'key',"
-    "display:'rotate',"
+    ""
+    "label:{"
+    "field:'key',"
     "contrast:true,"
-    "font:'18px Arial'}}]";
-    
-    /*
-     Human readable version... 
-     
-     @"series: [{
-     type: 'pie',
-     angleField: 'value',
-     label: {
-        field: 'key',
-        display: 'rotate',
-        contrast: true,
-        font: '18px Arial'
-     }}]";
-     */
+    "font:'16px Arial',"
+    "display: 'rotate',"
+    "renderer: function(value){"
+    "var index = store.find('key', value);"
+    "var record = store.getAt(index);"
+    "return record.get('key')+' : '+record.get('value');}"
+    "}}]";
+}
+
+- (NSString *)getJSTextInteractions
+{
+    return @"interactions:[{type:'rotate'}]";
 }
 
 - (NSString *)getJSTextAxes

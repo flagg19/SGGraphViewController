@@ -10,7 +10,7 @@
 #import "NSString+Additions.h"
 #import "JSONKit.h"
 
-//#define READ_INDEX_JS 1
+//#define READ_INDEX_JS
 
 @interface SGGraphBaseViewController ()
 
@@ -138,7 +138,13 @@
     // Stick together the axes and the series + some other chart info to form the complete chart code.
     
     static NSString *bottom = @"});";
-    NSString *main = [NSString stringWithFormat:@"var my_chart=new Ext.chart.Chart({renderTo:Ext.getBody(),width:%f,height:%f,store:store,",
+    NSString *main = [NSString stringWithFormat:
+                      @"var my_chart=new Ext.chart.Chart({"
+                      "renderTo:Ext.getBody(),"
+                      "width:%f,"
+                      "height:%f,"
+                      "animate:true,"
+                      "store:store,",
                       _size.width,_size.height];
     
     _chartJSText = [NSString stringWithFormat:@"%@%@%@%@%@",
@@ -151,32 +157,32 @@
 
 - (void)getJSTextContainer
 {
-    _containerJSText = 
+    /* 
+     * Setting up the scrolling option based on chart size and view size.
+     * A workaround to the device rotation problem is to enable scroll if in any 
+     * of the possible orentation the chart will need it. 
+     */
+    
+    NSString *scroll = [NSString string];
+    if (_size.height > self.view.bounds.size.height || _size.height > self.view.bounds.size.width) {
+        scroll = @"vertical";
+    }
+    if (_size.width > self.view.bounds.size.height || _size.width > self.view.bounds.size.width) {
+        scroll = ([scroll isEqualToString:[NSString string]]) ? @"horizontal" : @"both";
+    }
+    
+    _containerJSText = [NSString stringWithFormat:
     @"var my_container = new Ext.Panel({"
     "renderTo:Ext.getBody(),"
     "fullscreen: true,"
     "items: [my_chart],"
     "centered: true,"
-    "scroll: 'horizontal',"
+    "scroll: '%@',"
     "layout: {"
     "type: 'hbox',"
     "align: 'center',"
     "pack: 'center'"
-    "}});";
-    
-    /*
-     var my_container = new Ext.Panel({
-     renderTo:Ext.getBody(),
-     fullscreen: true,
-     items: [my_chart],
-     centered: true,
-     scroll: 'horizontal',
-     layout: {
-     type: 'hbox',
-     align: 'center',
-     pack: 'center'
-     }});
-     */
+    "}});",scroll];
 }
 
 - (void)getJSPage
