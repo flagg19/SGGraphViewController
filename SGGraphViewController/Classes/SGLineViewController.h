@@ -21,7 +21,8 @@
 @optional
 // Valid values are from 0 to 10
 - (NSNumber *)smoothValueForLine:(NSNumber *)line;
-- (BOOL)itemInfoInteraction;
+- (BOOL)shouldActivateItemInfoInteraction;
+- (BOOL)showMarkersForLine:(NSNumber *)line;
 @end
 
 

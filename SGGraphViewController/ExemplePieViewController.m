@@ -30,7 +30,7 @@
 
 - (NSNumber *)numberOfSlicesInPie
 {
-    return [[NSNumber alloc]initWithInt:10];
+    return [[NSNumber alloc]initWithInt:5];
 }
 
 - (NSString *)labelForSlice:(NSNumber *)num
@@ -40,7 +40,18 @@
 
 - (NSNumber *)valueForSlice:(NSNumber *)num
 {
-    return [[NSNumber alloc]initWithInt:[num intValue]];
+    return [[NSNumber alloc]initWithInt:[num intValue]+1];
 }
+
+- (BOOL)shouldShowLegend
+{
+    return YES;
+}
+
+- (NSString *)formatSlicesLabels
+{
+    return @"{value} Crediti";
+}
+
 
 @end

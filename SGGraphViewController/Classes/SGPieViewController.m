@@ -10,6 +10,8 @@
 
 @interface SGPieViewController ()
 
+- (NSString *)slicesLabelFormatter:(NSString *)text;
+
 @end
 
 @implementation SGPieViewController
@@ -22,6 +24,17 @@
         _pie = [[NSMutableArray alloc]init];
     }
     return self;
+}
+
+- (NSString *)slicesLabelFormatter:(NSString *)text
+{
+    static NSString *value = @"{value}";
+    static NSString *key = @"{key}";
+    
+    // Forming a correct javascript chain of strings
+    NSString *tempSplit = [text stringByReplacingOccurrencesOfString:value withString:@"'+record.get('value')+'"];
+    tempSplit = [tempSplit stringByReplacingOccurrencesOfString:key withString:@"'+record.get('key')+'"];
+    return [NSString stringWithFormat:@"'%@'",tempSplit];
 }
 
 #pragma mark - Superclass overriden methods
@@ -46,26 +59,40 @@
 }
 
 - (NSString *)getJSTextSeries
-{        
-    return @"series:[{"
-    "type:'pie',"
-    "angleField:'value',"
-    ""
-    "label:{"
-    "field:'key',"
-    "contrast:true,"
-    "font:'16px Arial',"
-    "display: 'rotate',"
-    "renderer: function(value){"
-    "var index = store.find('key', value);"
-    "var record = store.getAt(index);"
-    "return record.get('key')+' : '+record.get('value');}"
-    "}}]";
+{   
+    NSString *labelRenderer = ([self.dataSource respondsToSelector:@selector(formatSlicesLabels)])
+    ? [NSString stringWithFormat:
+       @",renderer:function(value){"
+       "var index=store.find('key',value);"
+       "var record=store.getAt(index);"
+       "return %@;}",
+       [self slicesLabelFormatter:[self.dataSource formatSlicesLabels]]]
+    : [NSString string];
+    
+    return [NSString stringWithFormat:
+            @"series:[{"
+            "type:'pie',"
+            "angleField:'value',"
+            "showInLegend:true,"
+            "label:{"
+            "field:'key',"
+            "contrast:true,"
+            "font:'16px Arial',"
+            "display:'center'"
+            "%@"
+            "}}]",labelRenderer];
 }
 
 - (NSString *)getJSTextInteractions
 {
     return @"interactions:[{type:'rotate'}]";
+}
+
+- (NSString *)getJSTextLegend
+{
+    return ([self.dataSource respondsToSelector:@selector(shouldShowLegend)] && [self.dataSource shouldShowLegend])
+    ? @"legend:{position:'bottom'}"
+    : nil;
 }
 
 - (NSString *)getJSTextAxes

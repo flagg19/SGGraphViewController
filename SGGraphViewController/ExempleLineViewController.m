@@ -59,9 +59,14 @@
     return @"test";
 }
 
-- (BOOL)itemInfoInteraction
+- (BOOL)shouldActivateItemInfoInteraction
 {
     return YES;
+}
+
+- (BOOL)showMarkersForLine:(NSNumber *)line
+{
+    return (![line intValue] == 0) ? YES : NO;
 }
 
 - (NSNumber *)smoothValueForLine:(NSNumber *)line

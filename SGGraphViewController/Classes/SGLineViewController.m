@@ -83,7 +83,7 @@
      {'x':value, 'y_0':7, 'desc':8, 'y_1':10},
      ...
      */
-
+    
     int rows = [_x count];
     int column = [_ys count];
     
@@ -107,8 +107,21 @@
     ? [self.dataSource smoothValueForLine:[[NSNumber alloc]initWithInt:line]]
     : [[NSNumber alloc]initWithInt:0];
     
-    NSString *results = [NSString stringWithFormat:@"{type:\"line\",axis:\"left\",smooth:%d,xField:\"x\",yField:\"y_%d\"}",
+    // Asking it this line should show markers (setting tollerance to zero to prevent touch)
+    NSString *markers = ([self.dataSource respondsToSelector:@selector(showMarkersForLine:)] &&
+                         [self.dataSource showMarkersForLine:[[NSNumber alloc] initWithInt:line]])
+    ? @"showMarkers:false,selectionTolerance:0,"
+    : [NSString string];
+    
+    
+    NSString *results = [NSString stringWithFormat:@"{type:\"line\","
+                         "axis:\"left\","
+                         "smooth:%d,"
+                         "%@"
+                         "xField:\"x\","
+                         "yField:\"y_%d\"}",
                          [smooth intValue],
+                         markers,
                          line];
     return results;
 }
@@ -116,8 +129,8 @@
 - (NSString *)getJSTextInteractions
 {
     // Asking for optional itemInfo 
-    BOOL itemInfo = ([self.dataSource respondsToSelector:@selector(itemInfoInteraction)])
-    ? [self.dataSource itemInfoInteraction]
+    BOOL itemInfo = ([self.dataSource respondsToSelector:@selector(shouldActivateItemInfoInteraction)])
+    ? [self.dataSource shouldActivateItemInfoInteraction]
     : NO;
     
     if (itemInfo) {
@@ -164,7 +177,7 @@
         }
         [_ys addObject:tempY];
     }
-
+    
     [self setupChartWithData:[self convertLinesToDrawableData]];
     [self showChart];
 }
@@ -197,11 +210,11 @@
     (temp3) ? [axes addObject:temp3] : nil;
     SGAxis *temp4 = [self setupAxisWithTitle:[self.dataSource titleForAxisInPosition:axisPositionBottom] position:axisPositionBottom];
     (temp4) ? [axes addObject:temp4] : nil;
-        
+    
     if ([axes count] == 0) {
         return nil;
     }
- 
+    
     return [SGAxis getJSTextAxes:axes];
 }
 

@@ -21,16 +21,8 @@
     @private    
     /* Chart related data */
     CGSize _size;
+    
     NSArray *_data;
-    SGAxis *_firstAxes;
-    SGAxis *_secondAxes;
-    NSString *_storeJSText;
-    NSString *_seriesJSText;
-    NSString *_chartJSText;
-    NSString *_axesJSText;
-    NSString *_fullJSTextPage;
-    NSString *_containerJSText;
-    NSString *_interactionsJSTexs;
 }
 
 // Passed to sencha framework, it's not related to the controller frame 
@@ -51,6 +43,7 @@
 - (NSString *)getJSTextSeries;
 - (NSString *)getJSTextAxes;
 - (NSString *)getJSTextInteractions;
+- (NSString *)getJSTextLegend;
 - (void)reloadData;
 
 @end

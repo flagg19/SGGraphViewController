@@ -13,6 +13,14 @@
 - (NSNumber *)numberOfSlicesInPie;
 - (NSNumber *)valueForSlice:(NSNumber *)num;
 - (NSString *)labelForSlice:(NSNumber *)num;
+@optional
+- (BOOL)shouldShowLegend;
+/*
+ * You can compose any string, special values are: {value} and {key} that will 
+ * be replaced with the slice specific values. The rest of the string may be
+ * whatever you want.
+ */
+- (NSString *)formatSlicesLabels;
 @end
 
 @interface SGPieViewController : SGGraphBaseViewController {

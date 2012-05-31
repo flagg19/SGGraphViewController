@@ -15,10 +15,10 @@
 @interface SGGraphBaseViewController ()
 
 - (void)initialize;
-- (void)getJSTextContainer;
-- (void)getJSTextStore;
-- (void)getJSTextChart;
-- (void)getJSPage;
+- (NSString *)getJSTextContainer;
+- (NSString *)getJSTextStore;
+- (NSString *)getJSTextChart;
+- (NSString *)getJSPage;
 
 @end
 
@@ -31,7 +31,7 @@
     webview = [[UIWebView alloc] init];
     self.view = webview;
     webview.delegate = self;
-
+    
     // Initializing html page to load
     NSError *error = nil;
     baseURL = [NSString stringWithFormat:@"%@/Sencha.bundle/", [[NSBundle mainBundle] bundleURL]];
@@ -61,37 +61,16 @@
 
 - (void)setupChartWithData:(NSArray *)data
 {
-    // Using setted size if avable, falling back to view's bounds otherwise
-    _size = (self.chartSize.height > 0 && self.chartSize.width > 0)
-    ? _chartSize
-    : self.view.bounds.size;
-    
     _data = data;
+    NSString *fullJSTextPage = [self getJSPage];
     
-    /* 
-     * Building the JS page, piece by piece.
-     * WARNING do not change the order of this calls, each on use the previous
-     * resutls setted in the global vars of this class to work.
-     */
-    [self getJSTextStore];
-    
-    // Functions that will be implemented in subclass to provide specialized charts
-    _axesJSText = [self getJSTextAxes];
-    _seriesJSText = [self getJSTextSeries];
-    _interactionsJSTexs = [self getJSTextInteractions];
-    
-    // Continue building the js page...
-    [self getJSTextChart];
-    [self getJSTextContainer];
-    [self getJSPage];
-    
-    #ifdef READ_INDEX_JS
+#ifdef READ_INDEX_JS
     // Using the index.js file included in the bundle for fast changes/debugging purpose
     htmlIndex = [htmlIndex stringByReplacingOccurrencesOfString:@">{graph_javascript}" withString:@" src=\"index.js\">"];
-    #else
+#else
     // Injecting the javascript page into the html    
-    htmlIndex = [htmlIndex stringByReplacingOccurrencesOfString:@"{graph_javascript}" withString:_fullJSTextPage];
-    #endif
+    htmlIndex = [htmlIndex stringByReplacingOccurrencesOfString:@"{graph_javascript}" withString:fullJSTextPage];
+#endif
     
 }
 
@@ -103,13 +82,8 @@
 
 #pragma mark - Private
 
-- (void)getJSTextStore
+- (NSString *)getJSTextStore
 {
-    if (!_data || [_data count] == 0) {
-        _storeJSText = nil;
-        return;
-    }
-    
     static NSString *top = @"var store=new Ext.data.JsonStore({";
     static NSString *fieldsStr = @"fields:";
     static NSString *dataStr = @"data:";
@@ -130,70 +104,97 @@
     // Closing js part...
     store = [store stringByAppendingString:bottom];
     
-    _storeJSText = store;
+    return store;
 }
 
-- (void)getJSTextChart
+- (NSString *)getJSTextChart
 {
-    // Stick together the axes and the series + some other chart info to form the complete chart code.
+    // Writing size info only if they have being setted
+    NSString *size = ((self.chartSize.height > 0 && self.chartSize.width > 0))
+    ? [NSString stringWithFormat:@"width:%f,height:%f,",self.chartSize.width,self.chartSize.height]
+    : [NSString string];
     
     static NSString *bottom = @"});";
     NSString *main = [NSString stringWithFormat:
                       @"var my_chart=new Ext.chart.Chart({"
                       "renderTo:Ext.getBody(),"
-                      "width:%f,"
-                      "height:%f,"
+                      "%@"
                       "animate:true,"
                       "store:store,",
-                      _size.width,_size.height];
+                      size];
     
-    _chartJSText = [NSString stringWithFormat:@"%@%@%@%@%@",
-                    main,
-                    (_axesJSText) ? [_axesJSText addComma] : [NSString string],
-                    (_interactionsJSTexs) ? [_interactionsJSTexs addComma] : [NSString string],
-                    _seriesJSText,
-                    bottom];
+    NSString *axesJSText = [self getJSTextAxes];
+    NSString *interactionsJSTexs = [self getJSTextInteractions];
+    NSString *seriesJSText = [self getJSTextSeries];
+    NSString *legendJSText = [self getJSTextLegend];
+    
+    // Stick together axes + series + some other chart info to form the complete chart code.
+    return [NSString stringWithFormat:@"%@%@%@%@%@%@",
+            main,
+            (axesJSText) ? [axesJSText addComma] : [NSString string],
+            (interactionsJSTexs) ? [interactionsJSTexs addComma] : [NSString string],
+            (legendJSText) ? [legendJSText addComma] : [NSString string],
+            (seriesJSText) ? seriesJSText : [NSString string],
+            bottom];
 }
 
-- (void)getJSTextContainer
+- (NSString *)getJSTextContainer
 {
-    /* 
-     * Setting up the scrolling option based on chart size and view size.
-     * A workaround to the device rotation problem is to enable scroll if in any 
-     * of the possible orentation the chart will need it. 
-     */
+    NSString *layout;
+    NSString *scroll;
     
-    NSString *scroll = [NSString string];
-    if (_size.height > self.view.bounds.size.height || _size.height > self.view.bounds.size.width) {
-        scroll = @"vertical";
+    // Using setted size if avable, falling back to a fit layout if not
+    if ((self.chartSize.height > 0 && self.chartSize.width > 0)) {
+        layout = @"{type:'hbox',"
+        "align:'center',"
+        "pack:'center'}";
+        
+        /* 
+         * Setting up the scrolling option based on chart size and view size.
+         * A workaround to the device rotation problem is to enable scroll if in any 
+         * of the possible orentation the chart will need it. 
+         */
+        
+        if (self.chartSize.height > self.view.bounds.size.height || self.chartSize.height > self.view.bounds.size.width) {
+            scroll = @"'vertical'";
+        }
+        if (self.chartSize.width > self.view.bounds.size.height || self.chartSize.width > self.view.bounds.size.width) {
+            scroll = (!scroll) ? @"'horizontal'" : @"'both'";
+        }
     }
-    if (_size.width > self.view.bounds.size.height || _size.width > self.view.bounds.size.width) {
-        scroll = ([scroll isEqualToString:[NSString string]]) ? @"horizontal" : @"both";
+    else {
+        scroll = @"false";
+        layout = @"'fit'";
     }
     
-    _containerJSText = [NSString stringWithFormat:
-    @"var my_container = new Ext.Panel({"
-    "renderTo:Ext.getBody(),"
-    "fullscreen: true,"
-    "items: [my_chart],"
-    "centered: true,"
-    "scroll: '%@',"
-    "layout: {"
-    "type: 'hbox',"
-    "align: 'center',"
-    "pack: 'center'"
-    "}});",scroll];
+    return [NSString stringWithFormat:
+            @"var my_container=new Ext.Panel({"
+            "renderTo:Ext.getBody(),"
+            "fullscreen:true,"
+            "items:[my_chart],"
+            "centered:true,"
+            "scroll:%@,"
+            "layout:%@"
+            "});",
+            scroll,
+            layout];
 }
 
-- (void)getJSPage
+- (NSString *)getJSPage
 {
     // Stick together the store and the chart + some other page setup code to form a complete JS sencha page.
     
     static NSString *top = @"Ext.setup({onReady:function(){";
     static NSString *bottom = @"}});";
     
-    _fullJSTextPage = [NSString stringWithFormat:@"%@%@%@%@%@",top,_storeJSText,_chartJSText,_containerJSText,bottom];
+    return [NSString stringWithFormat:@"%@%@%@%@%@",
+            top,
+            [self getJSTextStore],
+            [self getJSTextChart],
+            [self getJSTextContainer],
+            bottom];
 }
+
 
 #pragma mark - Subclass overriden methods
 
@@ -208,6 +209,11 @@
 }
 
 - (NSString *)getJSTextInteractions
+{
+    return nil;
+}
+
+- (NSString *)getJSTextLegend
 {
     return nil;
 }
